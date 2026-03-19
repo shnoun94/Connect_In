@@ -1,0 +1,45 @@
+services:
+  # Service pour l'application Laravel
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: connectin-app
+    container_name: connectin-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Connect_In:/var/www
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: connect_in
+      DB_USERNAME: Teach667
+      DB_PASSWORD: 1234
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Service pour la base de données (MySQL)
+  db:
+    image: mysql:8.0
+    container_name: connectin-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: connect_in
+      MYSQL_USER: Teach667
+      MYSQL_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  db_data:
