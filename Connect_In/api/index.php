@@ -1,14 +1,12 @@
 <?php
 
-// Définir le chemin de base
 define('LARAVEL_START', microtime(true));
 
-// Changer le répertoire de travail vers la racine du projet
-chdir(__DIR__ . '/..');
+$root = dirname(__DIR__);
 
-require __DIR__ . '/../vendor/autoload.php';
+require $root . '/vendor/autoload.php';
 
-$app = require_once __DIR__ . '/../bootstrap/app.php';
+$app = require_once $root . '/bootstrap/app.php';
 
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
